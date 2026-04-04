@@ -1,0 +1,130 @@
+﻿<Window x:Class="ComplexStackCalculator.Wpf.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Complex Stack Calculator" Height="640" Width="980"
+        WindowStartupLocation="CenterScreen">
+    <Grid Margin="12">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="3*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- LEFT: stack -->
+        <Border Grid.Column="0" BorderBrush="#DDD" BorderThickness="1" Padding="10" CornerRadius="6">
+            <DockPanel>
+                <StackPanel DockPanel.Dock="Top" Orientation="Vertical">
+                    <TextBlock Text="Stack (Top at top)" FontWeight="SemiBold" Margin="0,0,0,6"/>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                        <TextBlock Text="View:" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                        <ComboBox Width="180"
+                                  SelectedItem="{Binding DisplayMode}"
+                                  ItemsSource="{Binding DisplayModes}"/>
+                        <Button Content="Clear Stack"
+                                Margin="10,0,0,0"
+                                Command="{Binding ClearStackCommand}"/>
+                    </StackPanel>
+                </StackPanel>
+
+                <ListBox ItemsSource="{Binding StackItems}"
+                         BorderThickness="1"
+                         BorderBrush="#CCC"
+                         FontFamily="Consolas"
+                         FontSize="14">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding IndexLabel}" Width="55" Foreground="Gray"/>
+                                <TextBlock Text="{Binding Display}" TextWrapping="Wrap"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+
+                <TextBlock DockPanel.Dock="Bottom"
+                           Text="{Binding Status}"
+                           Margin="0,10,0,0"
+                           Foreground="DarkRed"
+                           TextWrapping="Wrap"/>
+            </DockPanel>
+        </Border>
+
+        <!-- RIGHT: input + buttons -->
+        <Border Grid.Column="1" BorderBrush="#DDD" BorderThickness="1" Padding="10" CornerRadius="6" Margin="12,0,0,0">
+            <DockPanel>
+                <StackPanel DockPanel.Dock="Top">
+                    <TextBlock Text="Input" FontWeight="SemiBold" Margin="0,0,0,6"/>
+                    <TextBox Text="{Binding InputText, UpdateSourceTrigger=PropertyChanged}" FontSize="16"/>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                        <Button Content="Enter (Push)" Width="140" Command="{Binding EnterCommand}"/>
+                        <Button Content="CE" Width="60" Command="{Binding ClearInputCommand}" Margin="8,0,0,0"/>
+                        <Button Content="⌫" Width="60" Command="{Binding BackspaceCommand}" Margin="8,0,0,0"/>
+                        <Button Content="Top→Input" Width="110" Command="{Binding PutTopToInputCommand}" Margin="8,0,0,0"/>
+                        <Button Content="Help" Width="70" Command="{Binding HelpCommand}" Margin="8,0,0,0"/>
+                    </StackPanel>
+                </StackPanel>
+
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- Memory row -->
+                    <UniformGrid Grid.Row="0" Rows="1" Columns="6" Margin="0,0,0,10">
+                        <Button Content="MS" Command="{Binding MemorySaveCommand}"/>
+                        <Button Content="MR" Command="{Binding MemoryRecallCommand}"/>
+                        <Button Content="MC" Command="{Binding MemoryClearCommand}"/>
+                        <Button Content="π" Command="{Binding PushConstCommand}" CommandParameter="pi"/>
+                        <Button Content="e" Command="{Binding PushConstCommand}" CommandParameter="e"/>
+                        <Button Content="i" Command="{Binding PushConstCommand}" CommandParameter="i"/>
+                    </UniformGrid>
+
+                    <!-- Operations -->
+                    <UniformGrid Grid.Row="1" Rows="6" Columns="5">
+                        <!-- arithmetic -->
+                        <Button Content="+" Command="{Binding OpCommand}" CommandParameter="+"/>
+                        <Button Content="-" Command="{Binding OpCommand}" CommandParameter="-"/>
+                        <Button Content="*" Command="{Binding OpCommand}" CommandParameter="*"/>
+                        <Button Content="/" Command="{Binding OpCommand}" CommandParameter="/"/>
+                        <Button Content="1/z" Command="{Binding OpCommand}" CommandParameter="inv"/>
+
+                        <!-- trig & sqrt ln -->
+                        <Button Content="sin" Command="{Binding OpCommand}" CommandParameter="sin"/>
+                        <Button Content="cos" Command="{Binding OpCommand}" CommandParameter="cos"/>
+                        <Button Content="tan" Command="{Binding OpCommand}" CommandParameter="tan"/>
+                        <Button Content="sqrt" Command="{Binding OpCommand}" CommandParameter="sqrt"/>
+                        <Button Content="ln" Command="{Binding OpCommand}" CommandParameter="ln"/>
+
+                        <!-- exp abs arg -->
+                        <Button Content="exp" Command="{Binding OpCommand}" CommandParameter="exp"/>
+                        <Button Content="|z|" Command="{Binding OpCommand}" CommandParameter="abs"/>
+                        <Button Content="Arg(z)" Command="{Binding OpCommand}" CommandParameter="arg"/>
+                        <Button Content="Conj" Command="{Binding OpCommand}" CommandParameter="conj"/>
+                        <Button Content="Neg" Command="{Binding OpCommand}" CommandParameter="neg"/>
+
+                        <!-- powers -->
+                        <Button Content="z²" Command="{Binding OpCommand}" CommandParameter="z2"/>
+                        <Button Content="z³" Command="{Binding OpCommand}" CommandParameter="z3"/>
+                        <Button Content="zʸ" Command="{Binding OpCommand}" CommandParameter="zPowY"/>
+                        <Button Content="z^z1" Command="{Binding OpCommand}" CommandParameter="zPowZ"/>
+                        <Button Content="Swap" Command="{Binding OpCommand}" CommandParameter="swap"/>
+
+                        <!-- stack helpers -->
+                        <Button Content="Drop" Command="{Binding OpCommand}" CommandParameter="drop"/>
+                        <Button Content="Dup" Command="{Binding OpCommand}" CommandParameter="dup"/>
+                        <Button Content="Clear Status" Command="{Binding ClearStatusCommand}"/>
+                        <Button Content="Push 0" Command="{Binding PushConstCommand}" CommandParameter="0"/>
+                        <Button Content="Push 1" Command="{Binding PushConstCommand}" CommandParameter="1"/>
+
+                        <!-- filler -->
+                        <Button Content="" IsEnabled="False"/>
+                        <Button Content="" IsEnabled="False"/>
+                        <Button Content="" IsEnabled="False"/>
+                        <Button Content="" IsEnabled="False"/>
+                        <Button Content="" IsEnabled="False"/>
+                    </UniformGrid>
+                </Grid>
+            </DockPanel>
+        </Border>
+    </Grid>
+</Window>
