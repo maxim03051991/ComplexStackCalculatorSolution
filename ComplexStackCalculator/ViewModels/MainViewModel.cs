@@ -1,4 +1,4 @@
-﻿using ComplexNumbersLib;                          // Библиотека комплексных чисел
+﻿using ComplexNumbersLib;                          // Библиотека комплексных чиселл
 using ComplexStackCalculator.Infrastructure;      // Базовые MVVM-классы и команды
 using ComplexStackCalculator.Operations;          // Реестр операций калькулятора
 using ComplexStackCalculator.Services;            // Сервисы стека и памяти
