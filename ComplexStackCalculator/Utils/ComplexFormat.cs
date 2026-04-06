@@ -14,7 +14,6 @@ public static class ComplexFormat
     // digits — количество знаков после запятой (по умолчанию 4)
     public static string Format(Cx z, ComplexDisplayMode mode, int digits = 4)
     {
-        // switch expression — современная форма switch в C#
         // в зависимости от режима отображения возвращается разная строка
         return mode switch
         {
